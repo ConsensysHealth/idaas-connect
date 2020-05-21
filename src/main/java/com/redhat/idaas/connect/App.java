@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Red Hat, Inc.
+ * Copyright 2020 Red Hat, Inc.
  * <p>
  * Red Hat licenses this file to you under the Apache License, version
  * 2.0 (the "License"); you may not use this file except in compliance
@@ -16,6 +16,10 @@
  */
 package com.redhat.idaas.connect;
 
+import com.redhat.idaas.connect.configuration.IdaasRouteBuilder;
+
+import org.apache.camel.component.hl7.HL7MLLPNettyDecoderFactory;
+import org.apache.camel.component.hl7.HL7MLLPNettyEncoderFactory;
 import org.apache.camel.main.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,22 +31,19 @@ public class App {
 
     private Logger logger = LoggerFactory.getLogger(App.class);
 
-    private Main camelMain;
 
-    /**
-     * Configures the iDAAS Connect Application
-     */
-    private void configure() {
-        camelMain = new Main();
+    private void start() throws Exception {
+        logger.info("booting Camel for iDAAS-Connect");
+        Main camelMain = new Main();
         camelMain.enableHangupSupport();
-    }
 
-    /**
-     * Executes the iDAAS Connect Application
-     * @throws Exception
-     */
-    private void run() throws Exception{
+        logger.info("configuring Camel for iDAAS-Connect");
+        camelMain.bind("hl7encoder", new HL7MLLPNettyEncoderFactory());
+        camelMain.bind("hl7decoder", new HL7MLLPNettyDecoderFactory());
+        camelMain.configure().addRoutesBuilder(new IdaasRouteBuilder());
+
         camelMain.run();
+        logger.info("iDAAS-Connect is started");
     }
 
     /**
@@ -52,9 +53,6 @@ public class App {
      */
     public static void main(String[] args) throws Exception {
         App app = new App();
-        app.logger.info("configuring iDAAS Connect");
-        app.configure();        
-        app.logger.info("starting iDAAS Connect");
-        app.run();
+        app.start();
     }
 }
