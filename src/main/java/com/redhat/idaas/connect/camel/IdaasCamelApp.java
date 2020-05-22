@@ -44,11 +44,6 @@ public class IdaasCamelApp {
      */
     private void configureApplication() {
         camelMain.enableHangupSupport();
-
-        // PropertiesComponent propsComponent = (PropertiesComponent) camelMain.getCamelContext()
-        //         .getComponent("properties", false);
-
-        // propsComponent.setLocation("classpath:application.properties");
     }
 
     /**
