@@ -19,13 +19,10 @@
 package com.redhat.idaas.connect.camel;
 
 import java.util.Arrays;
-import java.util.Properties;
 
-import org.apache.camel.Component;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.hl7.HL7MLLPNettyDecoderFactory;
 import org.apache.camel.component.hl7.HL7MLLPNettyEncoderFactory;
-import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.main.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
