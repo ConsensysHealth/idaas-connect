@@ -11,9 +11,11 @@ compileJava {
 repositories {
     mavenCentral()
     maven {
+        // libraries served include nessus-ipfs-client
         url 'https://repository.jboss.org/nexus/content/repositories/ea'
     }
     maven {
+        // libraries served include java-ipfs-api
         url 'https://jitpack.io'
     }
 }
