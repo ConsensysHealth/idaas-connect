@@ -48,7 +48,8 @@ dependencies {
     implementation group: 'ca.uhn.hapi', name: 'hapi-structures-v281', version: project.hapiHl7Version
 
     // IPFS
-    implementation group: 'io.nessus', name: 'nessus-ipfs-client', version: project.ipfsClientVersion
+    def excludeSlf4j = { exclude group: 'org.slf4j'}
+    implementation group: 'io.nessus', name: 'nessus-ipfs-client', version: project.ipfsClientVersion, excludeSlf4j
     implementation group: 'com.github.ipfs', name: 'java-ipfs-api', version: project.ipfsApiVersion
 
     // testing

@@ -34,7 +34,7 @@ class IdaasRouteBuilder extends RouteBuilder{
      */
     @Override
     public void configure() {
-        from("netty:tcp://localhost:8888?sync=true&encoders=#hl7encoder&decoders=#hl7decoder")
+        from("netty:tcp://{{idaas.connect.mllp.host}}:{{idaas.connect.mllp.port}}?sync=true&encoders=#hl7encoder&decoders=#hl7decoder")
         .routeId("hl7")
         .log("${body}")
         .to("stub:hl7-stub");

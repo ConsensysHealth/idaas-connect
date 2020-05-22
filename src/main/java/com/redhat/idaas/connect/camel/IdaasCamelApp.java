@@ -19,10 +19,13 @@
 package com.redhat.idaas.connect.camel;
 
 import java.util.Arrays;
+import java.util.Properties;
 
+import org.apache.camel.Component;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.hl7.HL7MLLPNettyDecoderFactory;
 import org.apache.camel.component.hl7.HL7MLLPNettyEncoderFactory;
+import org.apache.camel.component.properties.PropertiesComponent;
 import org.apache.camel.main.Main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +44,11 @@ public class IdaasCamelApp {
      */
     private void configureApplication() {
         camelMain.enableHangupSupport();
+
+        // PropertiesComponent propsComponent = (PropertiesComponent) camelMain.getCamelContext()
+        //         .getComponent("properties", false);
+
+        // propsComponent.setLocation("classpath:application.properties");
     }
 
     /**
@@ -53,9 +61,10 @@ public class IdaasCamelApp {
 
     /**
      * Adds routes to the camel context
-     * @param routes one or more  {@link RouteBuilder} instances
+     * 
+     * @param routes one or more {@link RouteBuilder} instances
      */
-    private void addRoutes(RouteBuilder ... routes) {
+    private void addRoutes(RouteBuilder... routes) {
         Arrays.asList(routes).stream().forEach(camelMain.configure()::addRoutesBuilder);
     }
 
@@ -75,5 +84,5 @@ public class IdaasCamelApp {
     public void start() throws Exception {
         logger.info("starting iDAAS Connect Camel Application");
         camelMain.run();
-    }    
+    }
 }
