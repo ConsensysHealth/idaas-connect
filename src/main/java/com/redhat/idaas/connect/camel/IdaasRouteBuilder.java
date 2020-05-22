@@ -15,22 +15,28 @@
  *
  */
 
-package com.redhat.idaas.connect;
+package com.redhat.idaas.connect.camel;
 
-import com.redhat.idaas.connect.camel.IdaasCamelApp;
+import org.apache.camel.builder.RouteBuilder;
 
 /**
- * iDAAS Connect Application
+ * Defines iDAAS Connect's supported data routes.
+ * Supported routes include:
+ * <ul>
+ *  <li>HL7-MLLP</li>
+ *  <li>FHIR-REST</li>
+ * </ul>
  */
-public class App {
+class IdaasRouteBuilder extends RouteBuilder{
 
     /**
-     * Entrypoint for iDAAS Connection Application.
-     * @param args
-     * @throws Exception
+     * Builds iDAAS Connect's data routes.
      */
-    public static void main(String[] args) throws Exception {
-        IdaasCamelApp camelApp = new IdaasCamelApp();
-        camelApp.start();
+    @Override
+    public void configure() {
+        from("netty:tcp://localhost:8888?sync=true&encoders=#hl7encoder&decoders=#hl7decoder")
+        .routeId("hl7")
+        .log("${body}")
+        .to("stub:hl7-stub");
     }
 }

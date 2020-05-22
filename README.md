@@ -37,9 +37,14 @@ docker-compose logs -f
 
 For additional Docker Compose commands, please refer to the [Official Documentation](https://docs.docker.com/compose/reference/overview/)
 
-To access Kafdrop, the Kafka Cluster View, browser to http://localhost:9000
+To access Kafdrop, the Kafka Cluster View, browse to http://localhost:9000
 
 To start the iDAAS Connect application
 ```
-./gradlew clean run
+./gradlew run
+```
+
+To list available Gradle tasks
+```
+./gradlew tasks
 ```
