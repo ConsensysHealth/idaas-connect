@@ -10,6 +10,20 @@ compileJava {
 
 repositories {
     mavenCentral()
+    maven {
+        // libraries served include nessus-ipfs-client
+        url 'https://repository.jboss.org/nexus/content/repositories/ea'
+    }
+    maven {
+        // libraries served include java-ipfs-api
+        url 'https://jitpack.io'
+    }
+}
+
+jar {
+    baseName = 'com.redhat.idaas.connect.component.ipfs'
+    archiveVersion =  '0.1.0'
+    include('com/redhat/idaas/connect/component/ipfs/*')
 }
 
 application {
@@ -42,6 +56,10 @@ dependencies {
     // testing
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: project.junitVersion
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: project.junitVersion
+
+    // IPFS
+    implementation group: 'io.nessus', name: 'nessus-ipfs-client', version: project.ipfsClientVersion
+    implementation group: 'com.github.ipfs', name: 'java-ipfs-api', version: project.ipfsApiVersion
 }
 
 application {
