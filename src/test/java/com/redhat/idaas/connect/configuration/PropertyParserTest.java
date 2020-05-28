@@ -1,4 +1,4 @@
-package com.redhat.idaas.connect.config;
+package com.redhat.idaas.connect.configuration;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,7 +21,8 @@ public class PropertyParserTest {
 
     /**
      * Loads test properties from file
-     * @throws IOException
+     *
+     * @throws IOException for errors reading the property file
      */
     @BeforeAll
     public static void beforeAll() throws IOException {
@@ -50,12 +51,11 @@ public class PropertyParserTest {
     }
 
     /**
-     * Tests {@link PropertyParser#parseComponents()}
-     * @throws ReflectiveOperationException
+     * Tests {@link PropertyParser#getIdaasComponents()} ()}
      */
     @Test
     public void testParseComponents() {
-        Map<String, String> actualComponents = propertyParser.parseComponents();
+        Map<String, String> actualComponents = propertyParser.getIdaasComponents();
         Assertions.assertTrue(actualComponents.containsKey("hl7decoder"));
         Assertions.assertTrue(actualComponents.containsKey("hl7encoder"));
 
