@@ -32,7 +32,12 @@ public final class PropertyParser {
      */
     private final Map<String, String> idaasComponents = new HashMap<>();
 
-
+    /**
+     * Returns a map of iDAAS Components
+     * Key - component name
+     * Value - component class name
+     * @return iDAAS Components as {@link Map<String, String>}
+     */
     public Map<String, String> getIdaasComponents() {
         return idaasComponents;
     }
