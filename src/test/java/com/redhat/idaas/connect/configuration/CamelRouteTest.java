@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link CamelRoute}
  */
-public class CamelRouteTest {
+class CamelRouteTest {
 
     private CamelRoute camelRoute;
 
@@ -15,27 +15,22 @@ public class CamelRouteTest {
      * Configures the {@link CamelRoute} fixture
      */
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         camelRoute = new CamelRoute();
         camelRoute.setRouteId("myRoute");
+        camelRoute.setRouteBluePrint("StubBluePrint");
 
         CamelEndpoint consumer = new CamelEndpoint();
         consumer.setScheme("ftp://");
         consumer.setContextPath("myftp.com:22/dropbox");
         camelRoute.setConsumer(consumer);
-
-        CamelEndpoint producer = new CamelEndpoint();
-        producer.setScheme("file://");
-        producer.setContextPath("home/serviceuser/documents");
-        producer.setOptions("fileExist=FAIL");
-        camelRoute.addProducer(producer);
     }
 
     /**
      * Tests {@link CamelRoute#equals} where an instance is compared to null
      */
     @Test
-    public void testEqualsNull() {
+    void testEqualsNull() {
         Assertions.assertNotEquals(camelRoute, null);
     }
 
@@ -43,7 +38,7 @@ public class CamelRouteTest {
      * Tests {@link CamelRoute#equals} where an instance is compared to a non-compatible type
      */
     @Test
-    public void testEqualsDifferentClass() {
+    void testEqualsDifferentClass() {
         Assertions.assertNotEquals(camelRoute, "a string");
     }
 
@@ -51,7 +46,7 @@ public class CamelRouteTest {
      * Tests {@link CamelRoute#equals} where an instance is compared to an equivalent object
      */
     @Test
-    public void testEqualsEquivalent() {
+    void testEqualsEquivalent() {
         CamelRoute otherRoute = new CamelRoute();
         otherRoute.setRouteId(camelRoute.getRouteId());
         Assertions.assertEquals(camelRoute, otherRoute);
@@ -61,7 +56,7 @@ public class CamelRouteTest {
      * Tests {@link CamelRoute#equals} where an instance is compared to a non-equivalent object
      */
     @Test
-    public void testEqualsNotEquivalent() {
+    void testEqualsNotEquivalent() {
         CamelRoute otherRoute = new CamelRoute();
         otherRoute.setRouteId("otherRoute");
         Assertions.assertNotEquals(camelRoute, otherRoute);
@@ -71,7 +66,7 @@ public class CamelRouteTest {
      * Validates that {@link CamelRoute#hashCode()} generates the same hash code for equivalent objects
      */
     @Test
-    public void testHashCodeForEqualObjects() {
+    void testHashCodeForEqualObjects() {
         CamelRoute otherRoute = new CamelRoute();
         otherRoute.setRouteId(camelRoute.getRouteId());
         Assertions.assertEquals(camelRoute.hashCode(), otherRoute.hashCode());
@@ -81,39 +76,9 @@ public class CamelRouteTest {
      * Validates that {@link CamelRoute#hashCode()} generates the same hash code for non-equivalent objects
      */
     @Test
-    public void testHashCodeForNonEqualObjects() {
+    void testHashCodeForNonEqualObjects() {
         CamelRoute otherRoute = new CamelRoute();
         otherRoute.setRouteId("otherRoute");
         Assertions.assertNotEquals(camelRoute.hashCode(), otherRoute.hashCode());
-    }
-
-    /**
-     * Tests {@link CamelRoute#toString()} with a single producer
-     */
-    @Test
-    public void testToString() {
-        String expectedRoute = "from(ftp://myftp.com:22/dropbox)\n"
-                .concat(".routeId(myRoute)\n")
-                .concat(".to(file://home/serviceuser/documents?fileExist=FAIL)\n");
-        Assertions.assertEquals(expectedRoute, camelRoute.toString());
-    }
-
-
-    /**
-     * Tests {@link CamelRoute#toString()} with multiple producers
-     */
-    @Test
-    public void testToStringMultipleProducers() {
-        String expectedRoute = "from(ftp://myftp.com:22/dropbox)\n"
-                .concat(".routeId(myRoute)\n")
-                .concat(".multicast()\n")
-                .concat(".to(file://home/serviceuser/documents?fileExist=FAIL,file://home/otheruser)\n");
-
-        CamelEndpoint producer = new CamelEndpoint();
-        producer.setScheme("file://");
-        producer.setContextPath("home/otheruser");
-        camelRoute.addProducer(producer);
-
-        Assertions.assertEquals(expectedRoute, camelRoute.toString());
     }
 }

@@ -1,6 +1,5 @@
 package com.redhat.idaas.connect.configuration;
 
-import org.apache.camel.builder.RouteBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,14 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 /**
  * Tests {@link PropertyParser}
  */
-public class PropertyParserTest {
+class PropertyParserTest {
 
     private static Properties sourceIdaasProperties;
 
@@ -27,7 +25,7 @@ public class PropertyParserTest {
      * @throws IOException for errors reading the property file
      */
     @BeforeAll
-    public static void beforeAll() throws IOException {
+    static void beforeAll() throws IOException {
         sourceIdaasProperties = new Properties();
 
         try (InputStream inputStream = ClassLoader.getSystemResourceAsStream("application.properties")) {
@@ -39,7 +37,7 @@ public class PropertyParserTest {
      * Sets up the {@link PropertyParser} prior to each test
      */
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         propertyParser = new PropertyParser(sourceIdaasProperties);
     }
 
@@ -47,7 +45,7 @@ public class PropertyParserTest {
      * Tests {@link PropertyParser#PropertyParser(Properties)} to ensure properties are filtered correctly
      */
     @Test
-    public void testPropertyFiltering() {
+    void testPropertyFiltering() {
         Assertions.assertNotNull(sourceIdaasProperties.getProperty("some.other.property"));
         Assertions.assertNull(propertyParser.getPropertyValue("some.other.property"));
     }
@@ -56,7 +54,7 @@ public class PropertyParserTest {
      * Tests {@link PropertyParser#PropertyParser(Properties)} and validates component parsing
      */
     @Test
-    public void testPropertyParserComponents() {
+    void testPropertyParserComponents() {
         Map<String, String> actualComponents = propertyParser.getIdaasComponents();
         Assertions.assertTrue(actualComponents.containsKey("hl7decoder"));
         Assertions.assertTrue(actualComponents.containsKey("hl7encoder"));
@@ -69,12 +67,28 @@ public class PropertyParserTest {
     }
 
     /**
-     * Tests {@link PropertyParser#PropertyParser(Properties)} and validates route generation
-     * TODO: more comprehensive testing in a separate test class with camel-test
+     * Tests {@link PropertyParser#PropertyParser(Properties)} and validates idaas route domain models
      */
     @Test
-    public void testPropertyParserRoutes() {
-        List<RouteBuilder> actualRoutes = propertyParser.getIdaasRouteDefinitions();
-        Assertions.assertEquals(1, actualRoutes.size());
+    void testPropertyParserIdaasRoutes() {
+        CamelRoute expectedCamelRoute = new CamelRoute();
+        expectedCamelRoute.setRouteBluePrint("stub");
+        expectedCamelRoute.setRouteId("hl7-mllp");
+
+        CamelEndpoint expectedConsumer = new CamelEndpoint();
+        expectedConsumer.setScheme("netty:tcp://");
+        expectedConsumer.setContextPath("localhost:2575");
+        expectedConsumer.setOptions("sync=true&encoders=#hl7encoder&decoders=#hl7decoder");
+        expectedCamelRoute.setConsumer(expectedConsumer);
+
+        Map<String, CamelRoute> actualIdaasRoutes =  propertyParser.getIdaasRoutes();
+        Assertions.assertTrue(actualIdaasRoutes.containsKey("hl7-mllp"));
+
+        CamelRoute actualRoute = actualIdaasRoutes.get("hl7-mllp");
+        Assertions.assertEquals("stub", actualRoute.getRouteBluePrint());
+
+        String expectedUri = "netty:tcp://localhost:2575?sync=true&encoders=#hl7encoder&decoders=#hl7decoder";
+        CamelEndpoint actualConsumer = actualRoute.getConsumer();
+        Assertions.assertEquals(expectedUri, actualConsumer.toString());
     }
 }

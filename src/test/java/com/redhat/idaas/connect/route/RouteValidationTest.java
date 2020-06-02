@@ -1,5 +1,6 @@
-package com.redhat.idaas.connect.routes;
+package com.redhat.idaas.connect.route;
 
+import com.redhat.idaas.connect.configuration.CamelRoute;
 import com.redhat.idaas.connect.configuration.PropertyParser;
 import org.apache.camel.Endpoint;
 import org.apache.camel.builder.RouteBuilder;
@@ -20,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * Parametrized Test cases for iDAAS-Connect generated routes.
  */
-public class RouteValidationTest extends CamelTestSupport {
+class RouteValidationTest extends CamelTestSupport {
 
     private static final String PROPERTY_FILE_DIRECTORY = "route-validation-tests/";
 
@@ -58,7 +59,7 @@ public class RouteValidationTest extends CamelTestSupport {
      * @return propertyParser a Property Parser instance
      * @throws Exception if an error occurs during route generation
      */
-    public PropertyParser setupRoutes(String propertyFilePath) throws Exception {
+    PropertyParser setupRoutes(String propertyFilePath) throws Exception {
         Properties properties = loadProperties(propertyFilePath);
         PropertyParser propertyParser = new PropertyParser(properties);
 
@@ -66,7 +67,9 @@ public class RouteValidationTest extends CamelTestSupport {
             registerCamelBean(entry.getKey(), entry.getValue());
         }
 
-        for (RouteBuilder routeBuilder : propertyParser.getIdaasRouteDefinitions()) {
+        for (Entry<String, CamelRoute> entry: propertyParser.getIdaasRoutes().entrySet()) {
+            RouteGenerator routeGenerator = new RouteGenerator(entry.getValue());
+            RouteBuilder routeBuilder = routeGenerator.generate();
             routeBuilder.addRoutesToCamelContext(context);
         }
 

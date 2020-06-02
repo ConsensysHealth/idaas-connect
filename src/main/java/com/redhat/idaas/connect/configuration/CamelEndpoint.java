@@ -6,9 +6,9 @@ import java.util.Objects;
  * Models a Camel Java DSL endpoint.
  * A Java DSL endpoint may be a consumer or producer within a Camel Route.
  * The Java DSL endpoint format is a URI structured as [scheme]://[contextPath]?[options]
- * Options are separated by "&"
+ * Options are usually separated by "&"
  */
-final class CamelEndpoint {
+public final class CamelEndpoint {
 
     private String scheme;
 
@@ -16,25 +16,25 @@ final class CamelEndpoint {
 
     private String options;
 
-    String getScheme() {
+    public String getScheme() {
         return scheme;
     }
 
-    void setScheme(String scheme) {
+    public void setScheme(String scheme) {
         this.scheme = scheme;
     }
 
-    String getContextPath() {
+    public String getContextPath() {
         return contextPath;
     }
 
-    void setContextPath(String contextPath) {
+    public void setContextPath(String contextPath) {
         this.contextPath = contextPath;
     }
 
-    String getOptions() { return options; }
+    public String getOptions() { return options; }
 
-    void setOptions(String options) { this.options = options; }
+    public void setOptions(String options) { this.options = options; }
 
     /**
      * Determines if this CamelEndpoint instance is equal to another object.

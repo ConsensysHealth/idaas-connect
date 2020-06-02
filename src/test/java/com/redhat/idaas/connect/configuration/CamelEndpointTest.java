@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Tests {@link CamelEndpoint}
  */
-public class CamelEndpointTest {
+class CamelEndpointTest {
 
     private CamelEndpoint camelEndpoint;
 
@@ -15,7 +15,7 @@ public class CamelEndpointTest {
      * Constructs a {@link CamelEndpoint} fixture prior to each test
      */
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         camelEndpoint = new CamelEndpoint();
         camelEndpoint.setScheme("ftp://");
         camelEndpoint.setContextPath("myftp.com:21/dropbox");
@@ -25,7 +25,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#equals} where an instance is compared to itself
      */
     @Test
-    public void testEqualsSameInstance() {
+    void testEqualsSameInstance() {
         CamelEndpoint otherEndpoint = camelEndpoint;
         Assertions.assertEquals(camelEndpoint, otherEndpoint);
     }
@@ -34,7 +34,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#equals} where an instance is compared to null
      */
     @Test
-    public void testEqualsNull() {
+    void testEqualsNull() {
         Assertions.assertNotEquals(camelEndpoint, null);
     }
 
@@ -42,7 +42,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#equals} where an instance is compared to a non-compatible type
      */
     @Test
-    public void testEqualsDifferentClass() {
+    void testEqualsDifferentClass() {
         Assertions.assertNotEquals(camelEndpoint, "a string");
     }
 
@@ -50,7 +50,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#equals} where an instance is compared to an equivalent object
      */
     @Test
-    public void testEqualsEquivalent() {
+    void testEqualsEquivalent() {
         CamelEndpoint otherEndpoint = new CamelEndpoint();
         otherEndpoint.setScheme(camelEndpoint.getScheme());
         otherEndpoint.setContextPath(camelEndpoint.getContextPath());
@@ -61,7 +61,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#equals} where an instance is compared to a non-equivalent object
      */
     @Test
-    public void testEqualsNotEquivalent() {
+    void testEqualsNotEquivalent() {
         CamelEndpoint otherEndpoint = new CamelEndpoint();
         otherEndpoint.setScheme(camelEndpoint.getScheme());
         otherEndpoint.setContextPath("myftp.com:21/dropoff");
@@ -72,7 +72,7 @@ public class CamelEndpointTest {
      * Validates that {@link CamelEndpoint#hashCode()} generates the same hash code for equivalent objects
      */
     @Test
-    public void testHashCodeForEqualObjects() {
+    void testHashCodeForEqualObjects() {
         CamelEndpoint otherEndpoint = new CamelEndpoint();
         otherEndpoint.setScheme(camelEndpoint.getScheme());
         otherEndpoint.setContextPath(camelEndpoint.getContextPath());
@@ -84,7 +84,7 @@ public class CamelEndpointTest {
      * Validates that {@link CamelEndpoint#hashCode()} generates the same hash code for non-equivalent objects
      */
     @Test
-    public void testHashCodeForNonEqualObjects() {
+    void testHashCodeForNonEqualObjects() {
         CamelEndpoint otherEndpoint = new CamelEndpoint();
         otherEndpoint.setScheme(camelEndpoint.getScheme());
         otherEndpoint.setContextPath("myftp.com:21/dropoff");
@@ -96,7 +96,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#toString()}
      */
     @Test
-    public void testToString() {
+    void testToString() {
         String expectedString = "ftp://myftp.com:21/dropbox";
         Assertions.assertEquals(expectedString, camelEndpoint.toString());
     }
@@ -105,7 +105,7 @@ public class CamelEndpointTest {
      * Tests {@link CamelEndpoint#toString()} when endpoint options are present
      */
     @Test
-    public void testToStringWithOptions() {
+    void testToStringWithOptions() {
         camelEndpoint.setOptions("binary=true&disconnect=true&transferLoggingLevel=ERROR");
 
         String expectedUri = "ftp://myftp.com:21/dropbox?binary=true&disconnect=true&transferLoggingLevel=ERROR";

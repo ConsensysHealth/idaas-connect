@@ -1,6 +1,8 @@
 package com.redhat.idaas.connect;
 
+import com.redhat.idaas.connect.configuration.CamelRoute;
 import com.redhat.idaas.connect.configuration.PropertyParser;
+import com.redhat.idaas.connect.route.RouteGenerator;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.main.Main;
 import org.slf4j.Logger;
@@ -9,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 
 /**
@@ -58,8 +60,11 @@ public final class App {
         Map<String, String> componentMap = propertyParser.getIdaasComponents();
         addCamelComponents(componentMap);
 
-        List<RouteBuilder> routes = propertyParser.getIdaasRouteDefinitions();
-        routes.forEach(r -> camelMain.configure().addRoutesBuilder(r));
+        for (Entry<String, CamelRoute> entry: propertyParser.getIdaasRoutes().entrySet()) {
+            RouteGenerator routeGenerator = new RouteGenerator(entry.getValue());
+            RouteBuilder routeBuilder = routeGenerator.generate();
+            camelMain.configure().addRoutesBuilder(routeBuilder);
+        }
     }
 
     /**
