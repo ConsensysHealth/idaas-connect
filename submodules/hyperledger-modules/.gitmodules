@@ -1,0 +1,9 @@
+[submodule "hyperledger-modules/avalon"]
+	path = hyperledger-modules/avalon
+	url = https://github.com/hyperledger/avalon
+[submodule "hyperledger-modules/besu"]
+	path = hyperledger-modules/besu
+	url = https://github.com/hyperledger/besu
+[submodule "hyperledger-modules/cactus"]
+	path = hyperledger-modules/cactus
+	url = https://github.com/hyperledger/cactus
